@@ -1,0 +1,235 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "category": "coffee",
+            "type": "hot",
+            "name": "اسپرسو",
+            "description": "یک فنجان قهوه تازه دم",
+            "price": 15000
+        },{
+            "id": 2,
+            "category": "coffee",
+            "type": "hot",
+            "name": "لاته",
+            "description": "قهوه همراه با شیر",
+            "price": 18000
+        },
+        {
+            "id": 3,
+            "category": "coffee",
+            "type": "hot",
+            "name": "ماکیاتو",
+            "description": "قهوه همراه با کمی شیر و فوم",
+            "price": 17000
+        },
+        {
+            "id": 4,
+            "category": "coffee",
+            "type": "hot",
+            "name": "موکا",
+            "description": "قهوه همراه با شیر و شکلات",
+            "price": 19000
+        },
+        {
+            "id": 5,
+            "category": "tea",
+            "type": "hot",
+            "name": "چای",
+            "description": "یک فنجان چای داغ",
+            "price": 10000
+        },
+        {
+            "id": 6,
+            "category": "tea",
+            "type": "hot",
+            "name": "چای سبز",
+            "description": "یک فنجان چای سبز تازه",
+            "price": 12000
+        },
+        {
+            "id": 7,
+            "category": "tea",
+            "type": "hot",
+            "name": "چای اولانگ",
+            "description": "یک فنجان چای اولانگ خوشمزه",
+            "price": 13000
+        },
+        {
+            "id": 8,
+            "category": "tea",
+            "type": "hot",
+            "name": "چای اولانگ با لیمو",
+            "description": "یک فنجان چای اولانگ با طعم لیمو",
+            "price": 14000
+        },
+        {
+            "id": 9,
+            "category": "tea",
+            "type": "hot",
+            "name": "چای اولانگ با نعناع",
+            "description": "یک فنجان چای اولانگ با طعم نعناع",
+            "price": 15000
+        },
+        {
+            "id": 10,
+            "category": "iced coffee",
+            "type": "cold",
+            "name": "ایس کافی ",
+            "description": "یک فنجان قهوه سرد",
+            "price": 16000
+        },
+        {
+            "id": 11,
+            "category": "iced coffee",
+            "type": "cold",
+            "name": "ایس لاته",
+            "description": "یک فنجان لاته سرد",
+            "price": 17000
+        },
+        {
+            "id": 12,
+            "category": "iced coffee",
+            "type": "cold",
+            "name": "ایس موکا",
+            "description": "یک فنجان موکا سرد",
+            "price": 18000
+        },
+        {
+            "id": 13,
+            "category": "iced tea",
+            "type": "cold",
+            "name": "ایس چای",
+            "description": "یک لیوان چای سرد",
+            "price": 15000
+        },
+        {
+            "id": 14,
+            "category": "iced tea",
+            "type": "cold",
+            "name": "ایس چای سبز",
+            "description": "یک لیوان چای سبز سرد",
+            "price": 16000
+        },
+        {
+            "id": 15,
+            "category": "moctel",
+            "type": "cold",
+            "name": "لیموتاد",
+            "description": "یک لیوان لیموتاد سرد",
+            "price": 17000
+        },
+        {
+            "id": 16,
+            "category": "moctel",
+            "type": "cold",
+            "name": "موهیتو",
+            "description": "یک لیوان موهیتو سرد",
+            "price": 18000
+        },
+        {
+            "id": 17,
+            "category": "moctel",
+            "type": "cold",
+            "name": "آبمیوه مخلوط",
+            "description": "یک لیوان آبمیوه مخلوط سرد",
+            "price": 19000
+        },
+        {
+            "id": 18,
+            "category": "moctel",
+            "type": "cold",
+            "name": "آب پرتقال",
+            "description": "یک لیوان آب پرتقال سرد",
+            "price": 20000
+        },
+        {
+            "id": 19,
+            "category": "hot drink",
+            "type": "hot",
+            "name": "هات چاکلت",
+            "description": "یک فنجان هات چاکلت داغ",
+            "price": 12000
+        },
+        {
+            "id": 20,
+            "category": "hot drink",
+            "type": "hot",
+            "name": "قهوه ترک",
+            "description": "یک فنجان قهوه ترک داغ",
+            "price": 13000
+        },
+        {
+            "id": 21,
+            "category": "hot drink",
+            "type": "hot",
+            "name": "وایت چاکلت",
+            "description": "یک فنجان وایت چاکلت داغ",
+            "price": 11000
+        },
+        {
+            "id": 22,
+            "category": "food",
+            "type": "food",
+            "name": "سوپ روز",
+            "description": "یک کاسه سوپ داغ",
+            "price": 25000
+        },
+        {
+            "id": 23,
+            "category": "food",
+            "type": "food",
+            "name": "سالاد فصل",
+            "description": "یک کاسه سالاد تازه",
+            "price": 22000
+        },
+        {
+            "id": 24,
+            "category": "food",
+            "type": "food",
+            "name": "پاستا",
+            "description": "یک بشقاب پاستای تازه",
+            "price": 30000
+        },
+        {
+            "id": 25,
+            "category": "food",
+            "type": "food",
+            "name": "برگر",
+            "description": "یک عدد برگر خوشمزه",
+            "price": 35000
+        },
+        {
+            "id": 26,
+            "category": "food",
+            "type": "food",
+            "name": "ساندویچ",
+            "description": "یک عدد ساندویچ تازه",
+            "price": 28000
+        },
+        {
+            "id": 27,
+            "category": "cake",
+            "type": "dessert",
+            "name": "کیک شکلاتی",
+            "description": "یک تکه کیک شکلاتی خوشمزه",
+            "price": 15000
+        },
+        {
+            "id": 28,
+            "category": "cake",
+            "type": "dessert",
+            "name": "چیزکیک",
+            "description": "یک تکه چیزکیک خوشمزه",
+            "price": 18000
+        },
+        {
+            "id": 29,
+            "category": "cake",
+            "type": "dessert",
+            "name": "کیک یزدی",
+            "description": "یک تکه کیک یزدی خوشمزه",
+            "price": 12000
+        }
+    ]
+}

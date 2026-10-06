@@ -1,0 +1,11 @@
+@import "tailwindcss";
+/* @import "tailwindcss-primeui"; */
+@font-face {
+    font-family: 'B-ziba';
+    src: url(../fonts/B-ziba/B-ziba-Regular.eot);
+}
+
+body {
+    font-family: 'B-ziba', sans-serif;
+    direction: rtl;
+}
