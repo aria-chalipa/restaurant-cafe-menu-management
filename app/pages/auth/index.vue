@@ -6,12 +6,12 @@
         <p class="text-orange-50/90 text-sm mt-1">برای ادامه وارد شوید</p>
       </div>
 
-      <div class="space-y-4 p-6">
+      <form @submit.prevent="handelSignin" class="space-y-4 p-6">
         <InputGroup class="rounded-lg! overflow-hidden border border-orange-200 focus-within:border-orange-400 transition-colors">
             <InputGroupAddon class="bg-orange-50! border-none!">
                 <User class="text-orange-500 w-4 h-4" />
             </InputGroupAddon>
-            <InputText placeholder="نام کاربری" class="border-none! bg-white! focus:shadow-none! text-stone-800!" />
+            <InputText v-model="name" placeholder="نام کاربری" class="border-none! bg-white! focus:shadow-none! text-stone-800!" />
         </InputGroup>
 
         <InputGroup class="rounded-lg! overflow-hidden border border-orange-200 focus-within:border-orange-400 transition-colors ">
@@ -31,32 +31,68 @@
                     </template>
                 </Select>
             </InputGroupAddon>
-            <InputText placeholder="شماره تلفن" class="border-none! bg-white! focus:shadow-none! text-stone-800!" type="number" />
+            <InputText v-model="number" placeholder="شماره تلفن" class="border-none! bg-white! focus:shadow-none! text-stone-800!" type="number" />
         </InputGroup>
 
-        <button class="w-full mt-2 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold py-2.5 rounded-lg shadow-md shadow-orange-300/50 transition-colors cursor-pointer">
-          ادامه
+        <p v-if="errorMessage" class="text-sm text-red-500 text-center">{{ errorMessage }}</p>
+
+        <button
+          type="submit"
+          :disabled="isSubmitting"
+          class="w-full mt-2 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-lg shadow-md shadow-orange-300/50 transition-colors cursor-pointer"
+        >
+          {{ isSubmitting ? 'در حال ارسال...' : 'ادامه' }}
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import User from '@primeicons/vue/user';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import InputText from 'primevue/inputtext';
 import Select from 'primevue/select';
+import { postUsers } from '~/sevices/postUsers.services';
 
 
+const router = useRouter();
+const name = ref('')
+const number = ref('')
+const isSubmitting = ref(false);
+const errorMessage = ref('');
 
 const phoneCodes = ref([
     { name: 'IR', code: 'ir', dial: '+98' },
-    { name: 'TR', code: 'tr' }
+    { name: 'TR', code: 'tr', dial: '+90' }
 ]);
 const selectedCode = ref(phoneCodes.value[0]);
+
+async function handelSignin(){
+    if(selectedCode.value?.dial == '+98') {
+        number.value = number.value.replace(/^0+/, '');
+    }
+
+    errorMessage.value = '';
+    isSubmitting.value = true;
+    try {
+        await postUsers({
+            name: name.value,
+            number: number.value,
+        });
+        name.value = '';
+        number.value = '';
+        selectedCode.value = phoneCodes.value[0];
+    } catch (error) {
+        errorMessage.value = 'ثبت نام با مشکل مواجه شد. دوباره تلاش کنید.';
+    } finally {
+        isSubmitting.value = false;
+        router.push('/'); 
+    }
+}
 
 definePageMeta({
     title: 'Authentication',

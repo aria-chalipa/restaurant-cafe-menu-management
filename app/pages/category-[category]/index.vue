@@ -28,27 +28,35 @@
           <p class="text-sm text-stone-500 mt-1">{{ item.description }}</p>
         </div>
         <span class="shrink-0 font-bold text-orange-600 whitespace-nowrap">{{ item.price.toLocaleString() }} تومان</span>
+        <AddRemoveCom @change="handelChange"/>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useUserOrders } from '@/store/useUserOrders';
 import type { MenuItems } from '~/models/menu/MenuItems';
 import { getMenuItem } from '~/sevices/getMenuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import ArrowRight from '@primeicons/vue/arrow-right';
+import AddRemoveCom from '~/components/base/add_removeCom.vue';
 
 const route = useRoute();
 let category = route.params.category;
 const menuItems = ref<MenuItems[]>([]);
 const isLoading = ref(true);
+const userOrdersStore = useUserOrders();
 
 const getMenuItemsByCategory = async () => {
     isLoading.value = true;
     const response = await getMenuItem();
     menuItems.value = response.filter((item: any) => item.category === category);
     isLoading.value = false;
+};
+
+const handelChange = (quantity: number) => {
+  return quantity;
 };
 
 watch(() => route.params.category, (newCategory) => {

@@ -1,4 +1,4 @@
-import type { MenuItems } from '~/models/menu/menuItems';
+import type { MenuItems } from '~/models/menu/MenuItems';
 import type { FetchConfig } from '~/models/FetchConfig';
 import { fetchMenuItems } from '~/utils/menu/menuItemsFetch';
 

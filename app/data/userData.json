@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "number": "123456",
+      "token": "abcdef123456"
+    },
+    {
+      "name": "aria",
+      "number": "123456789",
+      "id": "DjZFq20LdR4"
+    },
+    {
+      "name": "saman",
+      "number": "123654",
+      "id": "1EPgRyaTTjE"
+    },
+    {
+      "name": "sasan",
+      "number": "142536",
+      "id": "kOoJxzMyVtk"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

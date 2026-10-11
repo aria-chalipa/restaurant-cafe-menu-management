@@ -1,6 +1,6 @@
-export interface FetchConfig{
+export interface FetchConfig<T> {
     baseURL ?: string;
-    body?: any | null;
+    body?: T | null;
     cache?: RequestCache;
     headers?: HeadersInit;
     keepalive?: boolean;
