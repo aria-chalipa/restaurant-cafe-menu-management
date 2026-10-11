@@ -7,7 +7,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "server": "json-server app/data/menuItems.json --port 3001"
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.2",
