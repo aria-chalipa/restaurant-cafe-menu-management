@@ -1,17 +1,18 @@
 <template>
   <div class="min-h-screen w-full bg-linear-to-br from-orange-50 via-white to-orange-100 flex items-center justify-center p-6">
+    <Toast />
     <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl shadow-orange-200/50 border border-orange-100 overflow-hidden">
       <div class="bg-linear-to-r from-orange-500 to-orange-400 px-6 py-8 text-center">
         <h1 class="text-2xl font-bold text-white tracking-wide">منو کافه و رستوران</h1>
         <p class="text-orange-50/90 text-sm mt-1">برای ادامه وارد شوید</p>
       </div>
 
-      <form @submit.prevent="handelSignin" class="space-y-4 p-6">
+      <Form @submit="handelSignin" :validation-schema="schema" class="space-y-4 p-6">
         <InputGroup class="rounded-lg! overflow-hidden border border-orange-200 focus-within:border-orange-400 transition-colors">
             <InputGroupAddon class="bg-orange-50! border-none!">
                 <User class="text-orange-500 w-4 h-4" />
             </InputGroupAddon>
-            <InputText v-model="name" placeholder="نام کاربری" class="border-none! bg-white! focus:shadow-none! text-stone-800!" />
+            <InputText v-model="name" placeholder="نام کاربری" class="border-none! bg-white! focus:shadow-none! text-stone-800!" name="name" />
         </InputGroup>
 
         <InputGroup class="rounded-lg! overflow-hidden border border-orange-200 focus-within:border-orange-400 transition-colors ">
@@ -31,10 +32,8 @@
                     </template>
                 </Select>
             </InputGroupAddon>
-            <InputText v-model="number" placeholder="شماره تلفن" class="border-none! bg-white! focus:shadow-none! text-stone-800!" type="number" />
+            <InputText v-model="number" placeholder="شماره تلفن" class="border-none! bg-white! focus:shadow-none! text-stone-800!" type="number" name="number"  />
         </InputGroup>
-
-        <p v-if="errorMessage" class="text-sm text-red-500 text-center">{{ errorMessage }}</p>
 
         <button
           type="submit"
@@ -43,27 +42,38 @@
         >
           {{ isSubmitting ? 'در حال ارسال...' : 'ادامه' }}
         </button>
-      </form>
+      </Form>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { Form } from 'vee-validate';
 import { ref } from 'vue';
+import * as Yup from 'yup';
 import { useRouter } from 'vue-router';
 import User from '@primeicons/vue/user';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
-import InputText from 'primevue/inputtext';
+import InputText from '~/components/base/inputText.vue';
 import Select from 'primevue/select';
 import { postUsers } from '~/sevices/postUsers.services';
+import { useToastStore } from '~/store/useToast';
+import { useAuthUser } from '~/store/useAuthUser';
 
 
 const router = useRouter();
+const { showToast } = useToastStore()
+const { login } = useAuthUser()
 const name = ref('')
 const number = ref('')
 const isSubmitting = ref(false);
 const errorMessage = ref('');
+
+const schema = Yup.object().shape({
+  name : Yup.string().required('نام کاربری الزامی است').min(2, 'نام کاربری باید حداقل ۲ کاراکتر باشد'),
+  number: Yup.string().required('شماره تلفن الزامی است').min(9, 'شماره تلفن باید حداقل ۹ رقم باشد'),
+})
 
 const phoneCodes = ref([
     { name: 'IR', code: 'ir', dial: '+98' },
@@ -79,18 +89,19 @@ async function handelSignin(){
     errorMessage.value = '';
     isSubmitting.value = true;
     try {
-        await postUsers({
+        const user = await postUsers({
             name: name.value,
             number: number.value,
         });
+        login(user);
         name.value = '';
         number.value = '';
         selectedCode.value = phoneCodes.value[0];
+        router.push(`/menu-${user.id}`);
     } catch (error) {
-        errorMessage.value = 'ثبت نام با مشکل مواجه شد. دوباره تلاش کنید.';
+        showToast('danger', 'اشکال در ورود', 'ثبت نام با مشکل مواجه شد. دوباره تلاش کنید.', 2000)
     } finally {
         isSubmitting.value = false;
-        router.push('/'); 
     }
 }
 

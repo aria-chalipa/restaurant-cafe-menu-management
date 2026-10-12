@@ -1,4 +1,4 @@
-import type { User, NewUser } from '~/models/users/users';
+import type { User, NewUser } from '~/models/users/Users';
 import { fetchUsers } from '~/utils/users/userFetch';
 
 export const postUsers = (user: NewUser) => {

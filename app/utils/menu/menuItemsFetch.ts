@@ -3,7 +3,7 @@ import type { FetchConfig } from '~/models/FetchConfig';
 
 export function fetchMenuItems <T = MenuItems[]> (url: string, config : FetchConfig<null> | undefined): Promise<T> {
     let newConfig : FetchConfig<null> = {
-        baseURL: 'http://localhost:3001',
+        baseURL: '/api/menu',
         ...config,
         retry: 1
     };
