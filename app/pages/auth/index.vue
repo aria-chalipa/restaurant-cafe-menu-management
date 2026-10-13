@@ -60,15 +60,18 @@ import Select from 'primevue/select';
 import { postUsers } from '~/sevices/postUsers.services';
 import { useToastStore } from '~/store/useToast';
 import { useAuthUser } from '~/store/useAuthUser';
+import useCreateToken from '~/composable/createToken';
 
 
 const router = useRouter();
 const { showToast } = useToastStore()
 const { login } = useAuthUser()
+const { token } = useCreateToken()
 const name = ref('')
 const number = ref('')
 const isSubmitting = ref(false);
 const errorMessage = ref('');
+const authUser = useAuthUser();
 
 const schema = Yup.object().shape({
   name : Yup.string().required('نام کاربری الزامی است').min(2, 'نام کاربری باید حداقل ۲ کاراکتر باشد'),
@@ -92,12 +95,13 @@ async function handelSignin(){
         const user = await postUsers({
             name: name.value,
             number: number.value,
+            token: token?.value
         });
         login(user);
         name.value = '';
         number.value = '';
         selectedCode.value = phoneCodes.value[0];
-        router.push(`/menu-${user.id}`);
+        router.push(`/menu-${authUser.getUser().id}`);
     } catch (error) {
         showToast('danger', 'اشکال در ورود', 'ثبت نام با مشکل مواجه شد. دوباره تلاش کنید.', 2000)
     } finally {

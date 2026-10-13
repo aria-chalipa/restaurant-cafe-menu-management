@@ -7,79 +7,20 @@
       "token": "abcdef123456"
     },
     {
-      "name": "aria",
+      "name": "sagar",
       "number": "123456789",
-      "id": "DjZFq20LdR4"
-    },
+      "token": "gJahwnZ_CPB1T1DV/FJch3D#",
+      "id": "fmxJtfWmK2E"
+    }
+  ],
+
+  "admins": [
     {
-      "name": "saman",
-      "number": "123654",
-      "id": "1EPgRyaTTjE"
-    },
-    {
-      "name": "sasan",
-      "number": "142536",
-      "id": "kOoJxzMyVtk"
-    },
-    {
-      "name": "riaa",
-      "number": "9144405759",
-      "id": "Wk-cZkMymNw"
-    },
-    {
-      "name": "soheil",
-      "number": "9144505759",
-      "id": "-qml-kB8fOg"
-    },
-    {
-      "name": "soheil",
-      "number": "9144508486",
-      "id": "GncbuP78coY"
-    },
-    {
-      "name": "soheil",
-      "number": "123456789",
-      "id": "Ew--x7PG8n8"
-    },
-    {
-      "name": "arman",
-      "number": "1234568874",
-      "id": "QiMw_NbbCBk"
-    },
-    {
-      "name": "تست کاربر",
-      "number": "9121234567",
-      "id": "h1bKkxKq8B8"
-    },
-    {
-      "name": "تست دو",
-      "number": "9123456789",
-      "id": "08016yAaQf8"
-    },
-    {
-      "name": "تست سه",
-      "number": "9129999999",
-      "id": "Vj35rJL4Tbo"
-    },
-    {
-      "name": "تست چهار",
-      "number": "9127777777",
-      "id": "yUiVex0lSpc"
-    },
-    {
-      "name": "saed",
-      "number": "123456789",
-      "id": "HJbYYpjV2iE"
-    },
-    {
-      "name": "ali",
-      "number": "914455759",
-      "id": "-in3svYo4i4"
-    },
-    {
-      "name": "ali",
-      "number": "91445457898",
-      "id": "V-81vuMf4xI"
+      "id": "1",
+      "name": "Admin User",
+      "number": "987654321",
+      "token": "adminToken123",
+      "password" : "adminPassword123"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

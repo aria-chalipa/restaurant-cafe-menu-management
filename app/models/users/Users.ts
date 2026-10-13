@@ -5,4 +5,4 @@ export interface User {
     token: string;
 }
 
-export type NewUser = Omit<User, 'id' | 'token'>;
+export type NewUser = Omit<User, 'id' >;

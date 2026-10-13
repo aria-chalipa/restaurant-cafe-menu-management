@@ -14,7 +14,7 @@
             <NuxtLink
                 v-for="category in menuCategories"
                 :key="category"
-                :to="`/menu-${$route.params.id}/category-${category}`"
+                :to="`/menu-${authUser.id}/category-${category}`"
                 class="category-item"
             >
                 <div class="h-full flex flex-col items-center justify-center gap-3 rounded-2xl border border-orange-100 bg-white px-4 py-6 shadow-md shadow-orange-200/50 transition-all duration-200 hover:border-orange-300 hover:shadow-lg hover:-translate-y-0.5">
@@ -33,10 +33,12 @@
 import { getMenuItem } from '~/sevices/getMenuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import Tag from '@primeicons/vue/tag';
+import { useAuthUser } from '~/store/useAuthUser';
 
 const menuCategories = ref<string[]>([]);
 const isLoading = ref(true);
 const hasError = ref(false);
+const authUser = useAuthUser();
 
 const getMenuCategory = async () => {
     isLoading.value = true;
