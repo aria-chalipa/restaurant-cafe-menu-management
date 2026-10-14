@@ -25,7 +25,7 @@ export const useAuthUser = defineStore('authUser', () => {
 
   const getUser = () => {
     return {
-      id: id.value,
+      id: Number(id.value),
       name: name.value,
       number: number.value,
       token: token.value,

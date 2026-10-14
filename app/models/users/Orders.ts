@@ -3,6 +3,7 @@ export interface UserOrder {
     name: string;
     items: UserOrderItem[];
     totalPrice: number;
+    status: OrderStatus;
     createdAt: Date;
 }
 
@@ -11,4 +12,10 @@ export interface UserOrderItem {
     name: string;
     quantity: number;
     price: number;
+}
+
+export enum OrderStatus {
+    Pending = "pending",
+    Completed = "completed",
+    Cancelled = "cancelled"
 }

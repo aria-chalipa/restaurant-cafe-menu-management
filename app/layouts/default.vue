@@ -1,5 +1,6 @@
 <template>
   <div >
+    
     <header class="bg-linear-to-r from-orange-500 to-orange-400 px-6 py-4 text-center pt-2">
     <h1>منو کافه و رستوران</h1>
   </header>

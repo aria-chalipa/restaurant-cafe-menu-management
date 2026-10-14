@@ -34,11 +34,14 @@ import { getMenuItem } from '~/sevices/getMenuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import Tag from '@primeicons/vue/tag';
 import { useAuthUser } from '~/store/useAuthUser';
+import { useToastStore } from '~/store/useToast';
 
 const menuCategories = ref<string[]>([]);
 const isLoading = ref(true);
 const hasError = ref(false);
 const authUser = useAuthUser();
+const { showToast } = useToastStore()
+const user = useAuthUser()
 
 const getMenuCategory = async () => {
     isLoading.value = true;
@@ -46,6 +49,7 @@ const getMenuCategory = async () => {
     try {
         const response = await getMenuItem();
         menuCategories.value = Array.from(new Set(response.map(item => item.category)));
+        showToast('success',`سلام ${user.getUser().name}`, 'به رستوران ما خوش آمدید', 2000 );
     } catch (error) {
         hasError.value = true;
     } finally {

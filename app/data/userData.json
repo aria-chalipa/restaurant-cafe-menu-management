@@ -11,16 +11,21 @@
       "number": "123456789",
       "token": "gJahwnZ_CPB1T1DV/FJch3D#",
       "id": "fmxJtfWmK2E"
+    },
+    {
+      "name": "soheil",
+      "number": "123456789",
+      "token": "EdH*DW^fY(&fhMhczW5X&D%m",
+      "id": "Tl6pRhQFmcA"
     }
   ],
-
   "admins": [
     {
       "id": "1",
       "name": "Admin User",
       "number": "987654321",
       "token": "adminToken123",
-      "password" : "adminPassword123"
+      "password": "adminPassword123"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
