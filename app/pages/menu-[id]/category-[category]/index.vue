@@ -32,41 +32,32 @@
       </div>
     </div>
 
-    <div v-if="menuItems.length" class="sticky bottom-4 mt-8 flex items-center justify-between gap-4 rounded-2xl border border-orange-100 bg-white px-5 py-4 shadow-lg shadow-orange-200/50">
-      <span class="font-semibold text-stone-800">مجموع: {{ totalPrice.toLocaleString() }} تومان</span>
-      <Button
-        label="ثبت سفارش"
-        :disabled="!cartItems.length || isSubmitting"
-        :loading="isSubmitting"
-        class="bg-orange-500! border-orange-500! hover:bg-orange-600!"
-        @click.prevent="submitOrder"
-      />
-    </div>
+
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useUserOrders } from '@/store/useUserOrders';
-import { useAuthUser } from '@/store/useAuthUser';
-import { useToastStore } from '@/store/useToast';
 import type { MenuItems } from '~/models/menu/MenuItems';
-import { OrderStatus, type UserOrder } from '~/models/users/Orders';
 import { getMenuItem } from '~/sevices/getMenuItem.sevices';
-import { orders as postOrders } from '~/sevices/orders.services';
 import ProgressSpinner from 'primevue/progressspinner';
 import Button from 'primevue/button';
 import ArrowRight from '@primeicons/vue/arrow-right';
 import AddRemoveCom from '~/components/base/add_removeCom.vue';
+import { useUserOrders } from '~/store/useUserOrders';
+import { OrderStatus } from '~/models/users/Orders';
+import type { UserOrder } from '~/models/users/Orders';
+import { useAuthUser } from '~/store/useAuthUser';
 
 const route = useRoute();
 let category = route.params.category;
 const menuItems = ref<MenuItems[]>([]);
 const isLoading = ref(true);
-const isSubmitting = ref(false);
 const quantities = ref<Record<number, number>>({});
 const userOrdersStore = useUserOrders();
-const authUser = useAuthUser();
-const { showToast } = useToastStore();
+const orders : UserOrder[] = [];
+const user = useAuthUser();
+
+
 
 const getMenuItemsByCategory = async () => {
     isLoading.value = true;
@@ -76,47 +67,22 @@ const getMenuItemsByCategory = async () => {
 };
 
 const handelChange = (item: MenuItems, quantity: number) => {
-  quantities.value[item.id] = quantity;
-};
-
-const cartItems = computed(() => {
-  return menuItems.value
-    .filter((item) => (quantities.value[item.id] ?? 0) > 0)
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      quantity: quantities.value[item.id] ?? 0,
-      price: item.price,
-    }));
-});
-
-const totalPrice = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
-});
-
-const submitOrder = async () => {
-  if (!cartItems.value.length) return;
-
-  const order: UserOrder = {
-    id: route.params.id as string,
-    name: authUser.getUser().name ?? '',
-    items: cartItems.value.map(item => ({ ...item })),
-    totalPrice: totalPrice.value,
-    status: OrderStatus.Pending,
+  orders.push({
+    id: user.getUser().id,
+    name: user.getUser().name ?? '',
+    items: [
+      {
+        id: item.id,
+        name: item.name,
+        quantity,
+        price: item.price,
+      }
+    ],
+    totalPrice: item.price * quantity,
+    status: OrderStatus.Completed,
     createdAt: new Date(),
-  };
-
-  isSubmitting.value = true;
-  try {
-    await postOrders(order);
-    userOrdersStore.addUserOrder(order);
-    quantities.value = {};
-    showToast('success', 'سفارش ثبت شد', 'سفارش شما با موفقیت ثبت شد', 2000);
-  } catch (error) {
-    showToast('danger', 'خطا در ثبت سفارش', 'دوباره تلاش کنید', 2000);
-  } finally {
-    isSubmitting.value = false;
-  }
+  });
+  userOrdersStore.addUserOrder(orders[orders.length - 1]);
 };
 
 watch(() => route.params.category, (newCategory) => {

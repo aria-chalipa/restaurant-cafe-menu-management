@@ -7,12 +7,16 @@ export const useUserOrders = defineStore('userOrders', () => {
         // @ts-ignore
         userOrders.value.push(orders);
     };
+    const getUserOrders = () => {
+        return userOrders.value;
+    };
     const clearUserOrders = () => {
         userOrders.value = [];
     };
     return {
         userOrders,
         addUserOrder,
-        clearUserOrders
+        clearUserOrders,
+        getUserOrders
     }
 })

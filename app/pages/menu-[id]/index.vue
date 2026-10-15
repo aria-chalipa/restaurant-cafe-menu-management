@@ -25,23 +25,44 @@
                 </div>
             </NuxtLink>
         </div>
+        <ResultCom
+          :totalPrice="totalPrice"
+          :cartItems="cartItems"
+          :isSubmitting="isSubmitting"
+          :submitOrder="submitOrder"
+        />
     </div>
 
 </template>
 
 <script lang="ts" setup>
+import ResultCom from '~/components/resultCom.vue';
 import { getMenuItem } from '~/sevices/getMenuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import Tag from '@primeicons/vue/tag';
 import { useAuthUser } from '~/store/useAuthUser';
 import { useToastStore } from '~/store/useToast';
+import { useUserOrders } from '~/store/useUserOrders';
 
 const menuCategories = ref<string[]>([]);
 const isLoading = ref(true);
 const hasError = ref(false);
 const authUser = useAuthUser();
-const { showToast } = useToastStore()
-const user = useAuthUser()
+const { showToast } = useToastStore();
+const user = useAuthUser();
+const orders = useUserOrders();
+
+const cartItems = computed(() => orders.getUserOrders().flatMap(order => order.items));
+const totalPrice = computed(() => cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0));
+const isSubmitting = ref(false);
+
+const submitOrder = () => {
+  isSubmitting.value = true;
+  isSubmitting.value = false;
+  showToast('success', 'سفارش با موفقیت ثبت شد', '', 2000);
+  orders.clearUserOrders();
+
+};
 
 const getMenuCategory = async () => {
     isLoading.value = true;
