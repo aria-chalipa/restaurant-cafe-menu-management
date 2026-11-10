@@ -26,6 +26,10 @@ import Plus from '@primeicons/vue/plus';
 import Minus from '@primeicons/vue/minus';
 import Button from 'primevue/button';
 
+const props = defineProps<{
+  handelAdd?: () => void
+  handelRemove?: () => void
+}>()
 const emit = defineEmits<{
   (e: 'change', value: number): void
 }>(); 
@@ -34,9 +38,11 @@ const number = ref(0);
 const handelNumber = (type: 'add' | 'remove') => {
   if (type === 'add') {
     number.value++;
+    props.handelAdd?.()
   } else if (type === 'remove') {
     if (number.value > 0) {
       number.value--;
+      props.handelRemove?.()
     }
   }
   emit('change', number.value);

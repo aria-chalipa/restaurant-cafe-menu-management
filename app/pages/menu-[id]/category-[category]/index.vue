@@ -28,7 +28,7 @@
           <p class="text-sm text-stone-500 mt-1">{{ item.description }}</p>
         </div>
         <span class="shrink-0 font-bold text-orange-600 whitespace-nowrap">{{ item.price.toLocaleString() }} تومان</span>
-        <AddRemoveCom @change="(quantity) => handelChange(item, quantity)"/>
+        <AddRemoveCom @change="(quantity) => handleQuantityChange(item, quantity)"/>
       </div>
     </div>
 
@@ -37,24 +37,22 @@
 </template>
 
 <script lang="ts" setup>
+
 import type { MenuItems } from '~/models/menu/MenuItems';
-import { getMenuItem } from '~/sevices/getMenuItem.sevices';
+import { getMenuItem } from '~/sevices/menuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import Button from 'primevue/button';
 import ArrowRight from '@primeicons/vue/arrow-right';
 import AddRemoveCom from '~/components/base/add_removeCom.vue';
 import { useUserOrders } from '~/store/useUserOrders';
 import { OrderStatus } from '~/models/users/Orders';
-import type { UserOrder } from '~/models/users/Orders';
 import { useAuthUser } from '~/store/useAuthUser';
 
 const route = useRoute();
 let category = route.params.category;
 const menuItems = ref<MenuItems[]>([]);
 const isLoading = ref(true);
-const quantities = ref<Record<number, number>>({});
 const userOrdersStore = useUserOrders();
-const orders : UserOrder[] = [];
 const user = useAuthUser();
 
 
@@ -66,23 +64,46 @@ const getMenuItemsByCategory = async () => {
     isLoading.value = false;
 };
 
-const handelChange = (item: MenuItems, quantity: number) => {
-  orders.push({
-    id: user.getUser().id,
-    name: user.getUser().name ?? '',
-    items: [
-      {
-        id: item.id,
-        name: item.name,
-        quantity,
-        price: item.price,
-      }
-    ],
-    totalPrice: item.price * quantity,
-    status: OrderStatus.Completed,
-    createdAt: new Date(),
-  });
-  userOrdersStore.addUserOrder(orders[orders.length - 1]);
+const handleQuantityChange = (item: MenuItems, quantity: number) => {
+  const userId = Number(user.getUser()?.id) || 0;
+  const order = userOrdersStore.getUserOrders().find(o => o.id === userId);
+
+  if (!order) {
+    if (quantity <= 0) return;
+    userOrdersStore.addUserOrder({
+      id: userId,
+      name: user.getUser()?.name ?? '',
+      items: [
+        {
+          id: item.id,
+          name: item.name,
+          quantity,
+          price: item.price,
+        }
+      ],
+      totalPrice: item.price * quantity,
+      status: OrderStatus.Completed,
+      createdAt: new Date(),
+    });
+    return;
+  }
+
+  const itemIndex = order.items.findIndex(i => i.id === item.id);
+  if (quantity <= 0) {
+    if (itemIndex !== -1) order.items.splice(itemIndex, 1);
+  } else if (itemIndex !== -1) {
+    // @ts-ignore
+    order.items[itemIndex].quantity = quantity;
+  } else {
+    order.items.push({ id: item.id, name: item.name, quantity, price: item.price });
+  }
+
+  if (order.items.length === 0) {
+    userOrdersStore.removeUserOrder(order.id);
+  } else {
+    order.totalPrice = order.items.reduce((total, i) => total + i.price * i.quantity, 0);
+    userOrdersStore.updateUserOrder(order);
+  }
 };
 
 watch(() => route.params.category, (newCategory) => {

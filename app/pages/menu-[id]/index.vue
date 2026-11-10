@@ -37,12 +37,14 @@
 
 <script lang="ts" setup>
 import ResultCom from '~/components/resultCom.vue';
-import { getMenuItem } from '~/sevices/getMenuItem.sevices';
+import { getMenuItem } from '~/sevices/menuItem.sevices';
 import ProgressSpinner from 'primevue/progressspinner';
 import Tag from '@primeicons/vue/tag';
 import { useAuthUser } from '~/store/useAuthUser';
 import { useToastStore } from '~/store/useToast';
 import { useUserOrders } from '~/store/useUserOrders';
+import { PostOrders } from '~/sevices/orders.services';
+import { OrderStatus, type UserOrder } from '~/models/users/Orders';
 
 const menuCategories = ref<string[]>([]);
 const isLoading = ref(true);
@@ -51,13 +53,28 @@ const authUser = useAuthUser();
 const { showToast } = useToastStore();
 const user = useAuthUser();
 const orders = useUserOrders();
+const route = useRoute();
+const router = useRouter();
 
+//@ts-ignore
 const cartItems = computed(() => orders.getUserOrders().flatMap(order => order.items));
 const totalPrice = computed(() => cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0));
 const isSubmitting = ref(false);
 
-const submitOrder = () => {
+const submitOrder = async () => {
   isSubmitting.value = true;
+  const  res = await PostOrders({
+    id: Number(user.getUser()?.id) || 0,
+    name: user.getUser()?.name || '',
+    items: [
+        ...cartItems.value,
+    ],
+    totalPrice: totalPrice.value,
+    status : OrderStatus.Pending,
+    createdAt: new Date()
+
+  });
+  router.push('/order');  
   isSubmitting.value = false;
   showToast('success', 'سفارش با موفقیت ثبت شد', '', 2000);
   orders.clearUserOrders();
@@ -70,11 +87,14 @@ const getMenuCategory = async () => {
     try {
         const response = await getMenuItem();
         menuCategories.value = Array.from(new Set(response.map(item => item.category)));
-        showToast('success',`سلام ${user.getUser().name}`, 'به رستوران ما خوش آمدید', 2000 );
     } catch (error) {
         hasError.value = true;
     } finally {
         isLoading.value = false;
+        if (route.query.welcome === '1' && user.getUser()) {
+            showToast('success', `سلام ${user.getUser().name}`, 'به رستوران ما خوش آمدید', 2000);
+            router.replace({ query: {} });
+        }
     }
 };
 
